@@ -43,14 +43,14 @@ function get-jira-server() {
 }
 
 function get-jira-ticket(){
-  echo $(git rev-parse --abbrev-ref HEAD | cut -f 1,2 -d -)
+  git rev-parse --abbrev-ref HEAD | cut -f 1,2 -d -
 }
 
 function jira-open(){
   open "${1}/browse/${$2}"
 }
 
-if !has open; then
+if ! has open; then
   fail "Could not find 'open' in your PATH"
 fi
 

@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 #
 # Rewrite all commits with one name to use another
+#
+# From https://stackoverflow.com/a/40565934
 
 set -o pipefail
 if [[ -n "$DEBUG" ]]; then
@@ -16,8 +18,8 @@ function has() {
   which "$@" > /dev/null 2>&1
 }
 
-if [[ ! has git-filter-branch ]]; then
-  myname=$(basename $0)
+if ! has git-filter-branch; then
+  myname=$(basename "$0")
   fail "Usage: $myname OLDNAME NEW_NAME NEW_EMAIL"
 fi
 
@@ -27,8 +29,8 @@ export OLD_NAME="${1:-$DEFAULT_NAME}"
 export NEW_NAME="${2:-$DEFAULT_NAME}"
 export NEW_EMAIL="${3:-$DEFAULT_EMAIL}"
 
-echo "Old:" $OLD_NAME "<*>"
-echo "New:" "$NEW_NAME <$NEW_EMAIL>"
+echo "Old: $OLD_NAME <*>"
+echo "New: $NEW_NAME <$NEW_EMAIL>"
 echo "To undo, use: git reset $(git rev-parse HEAD)"
 
 exec git filter-branch --env-filter \
